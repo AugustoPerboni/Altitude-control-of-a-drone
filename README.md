@@ -16,13 +16,16 @@ The model for altitude used considers that the trust of the actuator is applied 
 - This task is divided into phases and each phase corresponds to a file
 
 ## Phase 1 - Linearization
-
-	Model the system and compare the linearized with the non-linear to check the viability of the approximation. 
+Model the system and compare the linearized with the non-linear to check the viability of the approximation. 
 
 ## Phase 2 - Root-locus and PD controller
+Use of the root-locus to study the stability of the system and the implications of the zeros and the feedback gain in the system.
 
- 	Use of the root-locus to study the stability of the system and the implications of the zeros and the feedback gain in the system.
+## Phase 3 - PID Controller and disturbance rejection
+Analysis of a PD and PID controller  disturbance rejection capacity for different gains
 
-All the Phases have a published script with some analysis of the results.
+
+
+### All the Phases have a published script with some analysis of the results.
 
 	
