@@ -26,6 +26,4 @@ Analysis of a PD and PID controller  disturbance rejection capacity for differen
 
 
 
-### All the Phases have a published script with some analysis of the results.
-
 	
