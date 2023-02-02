@@ -1,0 +1,393 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Untitled</title><meta name="generator" content="MATLAB 9.12"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2023-01-12"><meta name="DC.source" content="Untitled.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Inicializations</a></li><li><a href="#2">Q4.2</a></li><li><a href="#3">Q4.3</a></li><li><a href="#5">Q 4.4</a></li><li><a href="#8">Session 7</a></li><li><a href="#9">Inicializations</a></li><li><a href="#11">Q5.6 Effect of disturbances with the PID controller</a></li></ul></div><h2 id="1">Inicializations</h2><pre class="codeinput">close <span class="string">all</span>; clear; clc;
+
+M  = 1;   <span class="comment">% Mass [kg]</span>
+Z0 = 2;<span class="comment">% Inicial high [m]</span>
+G  = 9.8; <span class="comment">% Gravity acelleration [m/s^2]</span>
+Kt = 3.575e-05; <span class="comment">% Constant [N/(rad/s)^2]</span>
+
+<span class="comment">% Calculation of equilibrium omega</span>
+omega_0 = sqrt(G*M/Kt);
+</pre><h2 id="2">Q4.2</h2><pre class="codeinput">vz1 = [-400 -10 -1 1 10 100];
+vz2 = [-400 -10 -1 1 10 100];
+<span class="keyword">for</span> jj = 1:length(vz2)
+    <span class="keyword">for</span> ii = 1:length(vz1)
+        figure
+        z1 = vz1(jj);
+        z2 = vz2(ii);
+        s = tf(<span class="string">'s'</span>);
+        G_open = (s + z1) * ( s + z2)/ (s^3*(s+300));
+        rlocus(G_open)
+        title(sprintf(<span class="string">'z1 = %d  z2 = %d'</span>,z1,z2))
+        snapnow;
+        close <span class="string">all</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre><img vspace="5" hspace="5" src="Untitled_01.png" alt=""> <img vspace="5" hspace="5" src="Untitled_02.png" alt=""> <img vspace="5" hspace="5" src="Untitled_03.png" alt=""> <img vspace="5" hspace="5" src="Untitled_04.png" alt=""> <img vspace="5" hspace="5" src="Untitled_05.png" alt=""> <img vspace="5" hspace="5" src="Untitled_06.png" alt=""> <img vspace="5" hspace="5" src="Untitled_07.png" alt=""> <img vspace="5" hspace="5" src="Untitled_08.png" alt=""> <img vspace="5" hspace="5" src="Untitled_09.png" alt=""> <img vspace="5" hspace="5" src="Untitled_10.png" alt=""> <img vspace="5" hspace="5" src="Untitled_11.png" alt=""> <img vspace="5" hspace="5" src="Untitled_12.png" alt=""> <img vspace="5" hspace="5" src="Untitled_13.png" alt=""> <img vspace="5" hspace="5" src="Untitled_14.png" alt=""> <img vspace="5" hspace="5" src="Untitled_15.png" alt=""> <img vspace="5" hspace="5" src="Untitled_16.png" alt=""> <img vspace="5" hspace="5" src="Untitled_17.png" alt=""> <img vspace="5" hspace="5" src="Untitled_18.png" alt=""> <img vspace="5" hspace="5" src="Untitled_19.png" alt=""> <img vspace="5" hspace="5" src="Untitled_20.png" alt=""> <img vspace="5" hspace="5" src="Untitled_21.png" alt=""> <img vspace="5" hspace="5" src="Untitled_22.png" alt=""> <img vspace="5" hspace="5" src="Untitled_23.png" alt=""> <img vspace="5" hspace="5" src="Untitled_24.png" alt=""> <img vspace="5" hspace="5" src="Untitled_25.png" alt=""> <img vspace="5" hspace="5" src="Untitled_26.png" alt=""> <img vspace="5" hspace="5" src="Untitled_27.png" alt=""> <img vspace="5" hspace="5" src="Untitled_28.png" alt=""> <img vspace="5" hspace="5" src="Untitled_29.png" alt=""> <img vspace="5" hspace="5" src="Untitled_30.png" alt=""> <img vspace="5" hspace="5" src="Untitled_31.png" alt=""> <img vspace="5" hspace="5" src="Untitled_32.png" alt=""> <img vspace="5" hspace="5" src="Untitled_33.png" alt=""> <img vspace="5" hspace="5" src="Untitled_34.png" alt=""> <img vspace="5" hspace="5" src="Untitled_35.png" alt=""> <img vspace="5" hspace="5" src="Untitled_36.png" alt=""> <h2 id="3">Q4.3</h2><p>Print the graph for z1 = 1 and z2 = 10 in order to identify the desired K</p><pre class="codeinput">figure
+z1 = 1;
+z2 = 10;
+s = tf(<span class="string">'s'</span>);
+G_open = (s + z1) * ( s + z2)/ (s^3*(s+300));
+rlocus(G_open)
+snapnow;
+close <span class="string">all</span>
+
+K = 1.17e+04;
+Kd = K*M/(600*Kt*omega_0);
+Kp = Kd*(z1 + z2);
+Ki = Kd*z1*z2;
+
+
+StopTime = 10;
+Zref = 1;
+simOut = sim(<span class="string">"sim_session6_2023.slx"</span>);
+figure;
+plot(simOut.dz.time,simOut.dz.signals.values);
+title(sprintf(<span class="string">"Step response of PD controller for z1=%.1f, z2=%.1f "</span> + <span class="keyword">...</span>
+    <span class="string">"                               and K = %.1f"</span>,z1,z2,K));
+maxh=max(simOut.dz.signals.values);
+xlabel(<span class="string">'time(s)'</span>);
+ylabel(<span class="string">'z(m)'</span>);
+snapnow;
+close <span class="string">all</span>
+</pre><img vspace="5" hspace="5" src="Untitled_37.png" alt=""> <img vspace="5" hspace="5" src="Untitled_38.png" alt=""> <pre class="codeinput"><span class="comment">%The system is stable with a slight peak before stabilizing with and</span>
+<span class="comment">%overshoot of 0.1799m which it quite low, the rise, peak and settling times</span>
+<span class="comment">%are wall within 1 second which means the system is quite responsive. To</span>
+<span class="comment">%reduce the overshoot some damping could be added to the system.</span>
+</pre><h2 id="5">Q 4.4</h2><pre class="codeinput"><span class="comment">%For zeros near -300 we can only analyze the RootLocus.</span>
+
+vz1 = [-300, -300, -10, -10];
+vz2 = [-300, -250, -10, 10];
+vK = [1000,1000,1000,1000];
+
+<span class="keyword">for</span> jj = 1:length(vz2)
+            figure
+            K = vK(jj);
+            z1 = vz1(jj);
+            z2 = vz2(jj);
+            Kd = K*M/(600*Kt*omega_0);
+            Kp = Kd*(z1 + z2);
+            Ki = Kd*z1*z2;
+            s = tf(<span class="string">'s'</span>);
+            G_open = (s + z1) * ( s + z2)/ (s^3*(s+300));
+            rlocus(G_open);
+            title(sprintf(<span class="string">'z1 = %.1f  z2 = %.1f'</span>,z1,z2))
+            snapnow;
+<span class="keyword">end</span>
+</pre><img vspace="5" hspace="5" src="Untitled_39.png" alt=""> <img vspace="5" hspace="5" src="Untitled_40.png" alt=""> <img vspace="5" hspace="5" src="Untitled_41.png" alt=""> <img vspace="5" hspace="5" src="Untitled_42.png" alt=""> <p>as it is clear, all systems with zeros near -300 are unstable by analysis of the Rootlocus, due to Simulink limitations we will not analyze their step responses but it is safe to assume they'd go to infinity or zero.</p><pre class="codeinput">vz1 = [10, 10, 25, 25];
+vz2 = [10, 10, 10, 10];
+vK = [1000,15000,10000,15000];
+
+<span class="keyword">for</span> jj = 1:length(vz2)
+            figure
+            K = vK(jj);
+            z1 = vz1(jj);
+            z2 = vz2(jj);
+            Kd = K*M/(600*Kt*omega_0);
+            Kp = Kd*(z1 + z2);
+            Ki = Kd*z1*z2;
+            s = tf(<span class="string">'s'</span>);
+            G_open = (s + z1) * ( s + z2)/ (s^3*(s+300));
+            rlocus(G_open);
+            title(sprintf(<span class="string">'z1 = %.1f  z2 = %.1f'</span>,z1,z2));
+            snapnow;
+            close <span class="string">all</span>
+            StopTime = 10;
+            Zref = 1;
+            simOut = sim(<span class="string">"sim_session6_2023.slx"</span>);
+            figure;
+            plot(simOut.dz.time,simOut.dz.signals.values);
+            title(sprintf(<span class="string">"Step response of PID controller for z1=%.1f,"</span> + <span class="keyword">...</span>
+                <span class="string">" z2=%.1f and K = %.1f"</span>,z1,z2,K));
+            maxh=max(simOut.dz.signals.values);
+            xlabel(<span class="string">'time(s)'</span>);
+            ylabel(<span class="string">'z(m)'</span>);
+            snapnow;
+            close <span class="string">all</span>
+<span class="keyword">end</span>
+</pre><img vspace="5" hspace="5" src="Untitled_43.png" alt=""> <img vspace="5" hspace="5" src="Untitled_44.png" alt=""> <img vspace="5" hspace="5" src="Untitled_45.png" alt=""> <img vspace="5" hspace="5" src="Untitled_46.png" alt=""> <img vspace="5" hspace="5" src="Untitled_47.png" alt=""> <img vspace="5" hspace="5" src="Untitled_48.png" alt=""> <img vspace="5" hspace="5" src="Untitled_49.png" alt=""> <img vspace="5" hspace="5" src="Untitled_50.png" alt=""> <pre class="codeinput"><span class="comment">%As expected, systems with positive zeros are generally stable given the</span>
+<span class="comment">%analysis of the Rootlocus, The value of K can be increased to help</span>
+<span class="comment">%stabilize the system and reduce the overshoot</span>
+</pre><h2 id="8">Session 7</h2><h2 id="9">Inicializations</h2><pre class="codeinput">Wd = 50*2*pi/60;
+<span class="comment">% Q5.4 Effect of disturbances with the PD controller</span>
+
+ Zref = 1;
+ StopTime = 100;
+ <span class="keyword">for</span> K = [50 100 500 2000 15000]
+    Kd = K*M/(600*Kt*omega_0);
+    Kp = Kd*(Zref);
+    simOut = sim(<span class="string">"sim_session7_PD.slx"</span>);
+    figure;
+    plot(simOut.dz.time,simOut.dz.signals.values);
+    title(sprintf(<span class="string">"PD Controller with K = %d"</span>,K));
+    xlabel(<span class="string">'time(s)'</span>);
+    ylabel(<span class="string">'z(m)'</span>);
+ <span class="keyword">end</span>
+</pre><img vspace="5" hspace="5" src="Untitled_51.png" alt=""> <img vspace="5" hspace="5" src="Untitled_52.png" alt=""> <img vspace="5" hspace="5" src="Untitled_53.png" alt=""> <img vspace="5" hspace="5" src="Untitled_54.png" alt=""> <img vspace="5" hspace="5" src="Untitled_55.png" alt=""> <pre>As expected the higher the gain the better the disturbance rejection for
+a continue disturbance. We can observe that the tracking error is never
+zero even for higher gains.</pre><h2 id="11">Q5.6 Effect of disturbances with the PID controller</h2><pre class="codeinput">Zref = 1;
+StopTime = 25;
+z1 = 1;
+z2 = 10;
+<span class="keyword">for</span> K = [500 750 1000 2000 15000]
+    Kd = K*M/(600*Kt*omega_0);
+    Kp = Kd*(z1 + z2);
+    Ki = Kd*z1*z2;
+    simOut = sim(<span class="string">"sim_session7_PID.slx"</span>);
+    figure;
+    plot(simOut.dz.time,simOut.dz.signals.values);
+    title(sprintf(<span class="string">"PID Controller with K = %d"</span>,K));
+    xlabel(<span class="string">'time(s)'</span>);
+    ylabel(<span class="string">'z(m)'</span>);
+<span class="keyword">end</span>
+</pre><img vspace="5" hspace="5" src="Untitled_56.png" alt=""> <img vspace="5" hspace="5" src="Untitled_57.png" alt=""> <img vspace="5" hspace="5" src="Untitled_58.png" alt=""> <img vspace="5" hspace="5" src="Untitled_59.png" alt=""> <img vspace="5" hspace="5" src="Untitled_60.png" alt=""> <p>Analogue to exercise Q5.3, the disturbance rejection increases for higher gains but with the PID the system need more time to be stabilized and higher gains. We could see that the same gain can produce a stable system with a PD controller and a unstable system with a PID controller. The system with the PID controller achieve tracking error zero in every stable case when time approaches to infinite.</p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Inicializations
+close all; clear; clc;
+
+M  = 1;   % Mass [kg]
+Z0 = 2;% Inicial high [m]
+G  = 9.8; % Gravity acelleration [m/s^2]
+Kt = 3.575e-05; % Constant [N/(rad/s)^2] 
+
+% Calculation of equilibrium omega
+omega_0 = sqrt(G*M/Kt); 
+
+%% Q4.2
+
+vz1 = [-400 -10 -1 1 10 100];
+vz2 = [-400 -10 -1 1 10 100];
+for jj = 1:length(vz2)
+    for ii = 1:length(vz1)
+        figure
+        z1 = vz1(jj);
+        z2 = vz2(ii);
+        s = tf('s');
+        G_open = (s + z1) * ( s + z2)/ (s^3*(s+300));
+        rlocus(G_open)
+        title(sprintf('z1 = %d  z2 = %d',z1,z2))
+        snapnow;
+        close all
+    end
+end
+
+
+%% Q4.3
+% Print the graph for z1 = 1 and z2 = 10 in order
+% to identify the desired K
+figure
+z1 = 1;
+z2 = 10;
+s = tf('s');
+G_open = (s + z1) * ( s + z2)/ (s^3*(s+300));
+rlocus(G_open)
+snapnow;
+close all
+
+K = 1.17e+04;
+Kd = K*M/(600*Kt*omega_0);
+Kp = Kd*(z1 + z2);
+Ki = Kd*z1*z2;
+
+
+StopTime = 10;
+Zref = 1;
+simOut = sim("sim_session6_2023.slx");
+figure;
+plot(simOut.dz.time,simOut.dz.signals.values); 
+title(sprintf("Step response of PD controller for z1=%.1f, z2=%.1f " + ...
+    "                               and K = %.1f",z1,z2,K));
+maxh=max(simOut.dz.signals.values);
+xlabel('time(s)');
+ylabel('z(m)');
+snapnow;
+close all
+%%
+%The system is stable with a slight peak before stabilizing with and
+%overshoot of 0.1799m which it quite low, the rise, peak and settling times
+%are wall within 1 second which means the system is quite responsive. To
+%reduce the overshoot some damping could be added to the system.
+
+%% Q 4.4
+%For zeros near -300 we can only analyze the RootLocus.
+
+vz1 = [-300, -300, -10, -10];
+vz2 = [-300, -250, -10, 10];
+vK = [1000,1000,1000,1000];
+
+for jj = 1:length(vz2)
+            figure
+            K = vK(jj);
+            z1 = vz1(jj);
+            z2 = vz2(jj);
+            Kd = K*M/(600*Kt*omega_0);
+            Kp = Kd*(z1 + z2);
+            Ki = Kd*z1*z2;
+            s = tf('s');
+            G_open = (s + z1) * ( s + z2)/ (s^3*(s+300));
+            rlocus(G_open);
+            title(sprintf('z1 = %.1f  z2 = %.1f',z1,z2))
+            snapnow;
+end
+%%
+% as it is clear, all systems with zeros near -300 are unstable by analysis
+% of the Rootlocus, due to Simulink limitations we will not analyze their
+% step responses but it is safe to assume they'd go to infinity or zero.
+
+vz1 = [10, 10, 25, 25];
+vz2 = [10, 10, 10, 10];
+vK = [1000,15000,10000,15000];
+
+for jj = 1:length(vz2)
+            figure
+            K = vK(jj);
+            z1 = vz1(jj);
+            z2 = vz2(jj);
+            Kd = K*M/(600*Kt*omega_0);
+            Kp = Kd*(z1 + z2);
+            Ki = Kd*z1*z2;
+            s = tf('s');
+            G_open = (s + z1) * ( s + z2)/ (s^3*(s+300));
+            rlocus(G_open);
+            title(sprintf('z1 = %.1f  z2 = %.1f',z1,z2));
+            snapnow;
+            close all
+            StopTime = 10;
+            Zref = 1;
+            simOut = sim("sim_session6_2023.slx");
+            figure;
+            plot(simOut.dz.time,simOut.dz.signals.values); 
+            title(sprintf("Step response of PID controller for z1=%.1f," + ...
+                " z2=%.1f and K = %.1f",z1,z2,K));
+            maxh=max(simOut.dz.signals.values);
+            xlabel('time(s)');
+            ylabel('z(m)');
+            snapnow;
+            close all
+end
+%%
+%As expected, systems with positive zeros are generally stable given the
+%analysis of the Rootlocus, The value of K can be increased to help
+%stabilize the system and reduce the overshoot
+
+%% Session 7
+ 
+%% Inicializations
+ 
+Wd = 50*2*pi/60;
+% Q5.4 Effect of disturbances with the PD controller 
+ 
+ Zref = 1;
+ StopTime = 100;
+ for K = [50 100 500 2000 15000]
+    Kd = K*M/(600*Kt*omega_0);
+    Kp = Kd*(Zref);
+    simOut = sim("sim_session7_PD.slx");
+    figure;
+    plot(simOut.dz.time,simOut.dz.signals.values); 
+    title(sprintf("PD Controller with K = %d",K));
+    xlabel('time(s)');
+    ylabel('z(m)');
+ end
+%% 
+%  As expected the higher the gain the better the disturbance rejection for
+%  a continue disturbance. We can observe that the tracking error is never
+%  zero even for higher gains.
+ 
+%% Q5.6 Effect of disturbances with the PID controller
+ 
+Zref = 1;
+StopTime = 25;
+z1 = 1;
+z2 = 10;
+for K = [500 750 1000 2000 15000]
+    Kd = K*M/(600*Kt*omega_0);
+    Kp = Kd*(z1 + z2);
+    Ki = Kd*z1*z2;
+    simOut = sim("sim_session7_PID.slx");
+    figure;
+    plot(simOut.dz.time,simOut.dz.signals.values); 
+    title(sprintf("PID Controller with K = %d",K));
+    xlabel('time(s)');
+    ylabel('z(m)');
+end
+ 
+%% 
+% Analogue to exercise Q5.3, the disturbance rejection increases for higher 
+% gains but with the PID the system need more time to be stabilized and
+% higher gains. We could see that the same gain can produce a stable system
+% with a PD controller and a unstable system with a PID controller. The
+% system with the PID controller achieve tracking error zero in every
+% stable case when time approaches to infinite.
+
+
+##### SOURCE END #####
+--></body></html>
